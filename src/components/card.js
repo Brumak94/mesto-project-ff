@@ -1,5 +1,3 @@
-const cardsContainer = document.querySelector(".places__list");
-
 function createCard(cardData, onDelete, onLike, openImg) {
   const cardTemplate = document.querySelector("#card-template").content;
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
@@ -35,17 +33,4 @@ function handleDelete(cardElement) {
   cardElement.remove();
 }
 
-function renderCard(cardData, openImg) {
-  const card = createCard(cardData, handleDelete, handleLike, openImg);
-  cardsContainer.appendChild(card);
-}
-
-function addCard(cardData, openImg) {
-  const card = createCard(cardData, handleDelete, handleLike, openImg);
-  cardsContainer.prepend(card);
-}
-
-export {
-  renderCard,
-  addCard
-};
+export {createCard, handleDelete, handleLike};

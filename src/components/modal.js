@@ -1,5 +1,3 @@
-import { addCard } from './card';
-
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const nameInput = document.querySelector('.popup__input_type_name');
@@ -13,12 +11,13 @@ function openModal(popup) {
   nameInput.value = currentName;
   jobInput.value = currentJob;
   popup.classList.add('popup_is-opened');
-  const overlay = document.createElement('div');
-  overlay.classList.add('popup__overlay');
-  popup.appendChild(overlay);
   const closeButton = popup.querySelector('.popup__close');
   closeButton.addEventListener('click', closeModal);
-  overlay.addEventListener('click', closeModal);
+  popup.addEventListener('click', (evt) => {
+    if (evt.target === popup) {
+      closeModal();
+    }
+  });
   document.addEventListener('keydown', handleEscKey);
 };
 
@@ -28,9 +27,11 @@ function closeModal() {
     popup.classList.remove('popup_is-opened');
     const closeButton = popup.querySelector('.popup__close');
     closeButton.removeEventListener('click', closeModal);
-    const overlay = popup.querySelector('.popup__overlay');
-    overlay.removeEventListener('click', closeModal);
-    overlay.remove();
+    popup.removeEventListener('click', (evt) => {
+    if (evt.target === popup) {
+      closeModal();
+    }
+  });
     document.removeEventListener('keydown', handleEscKey);
   }
 };
@@ -41,7 +42,7 @@ function handleEscKey(event) {
   }
 }
 
-function handleFormSubmit(evt) {
+function profileFormEdit(evt) {
   evt.preventDefault();
   const nameValue = nameInput.value.trim();
   const jobValue = jobInput.value.trim();
@@ -52,13 +53,13 @@ function handleFormSubmit(evt) {
   closeModal();
 };
 
-function handleFormCard(evt, openImg) {
+function handleFormCard(evt, renderCard) {
   evt.preventDefault();
   const placeValue = placeInput.value.trim();
   const linkValue = linkInput.value.trim();
-  addCard({name: placeValue, link: linkValue}, openImg);
+  renderCard({name: placeValue, link: linkValue}, 'prepend');
   evt.target.reset();
   closeModal();
 };
 
-export { openModal, handleFormCard, handleFormSubmit };
+export { openModal, handleFormCard, profileFormEdit };
