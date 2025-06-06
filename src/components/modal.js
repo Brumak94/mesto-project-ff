@@ -1,4 +1,4 @@
-import { cardsContainer,createCard,handleDelete,handleLike } from './card';
+import { addCard } from './card';
 
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
@@ -6,16 +6,6 @@ const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_description');
 const placeInput = document.querySelector('.popup__input_type_card-name');
 const linkInput = document.querySelector('.popup__input_type_url');
-const popupImage = document.querySelector('.popup_type_image');
-const imagePopupImg = popupImage.querySelector('.popup__image');
-const imagePopupCaption = popupImage.querySelector('.popup__caption');
-const formElementCard = document.querySelector('.popup_type_new-card .popup__form');
-
-function handleImg(cardImage) {
-  openModal(popupImage);
-  imagePopupImg.src = cardImage.link;
-  imagePopupCaption.textContent = cardImage.name;
-};
 
 function openModal(popup) {
   const currentName = profileTitle.textContent;
@@ -62,18 +52,13 @@ function handleFormSubmit(evt) {
   closeModal();
 };
 
-function handleFormCard(evt) {
+function handleFormCard(evt, openImg) {
   evt.preventDefault();
   const placeValue = placeInput.value.trim();
   const linkValue = linkInput.value.trim();
-  addCard({name: placeValue, link: linkValue});
-  formElementCard.reset();
+  addCard({name: placeValue, link: linkValue}, openImg);
+  evt.target.reset();
   closeModal();
 };
 
-function addCard(cardData) {
-  const card = createCard(cardData, handleDelete, handleLike, handleImg);
-  cardsContainer.prepend(card);
-};
-
-export { openModal, closeModal, handleFormCard, handleFormSubmit, handleImg, addCard, handleEscKey, formElementCard };
+export { openModal, handleFormCard, handleFormSubmit };
