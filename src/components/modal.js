@@ -4,10 +4,8 @@ const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 const nameInput = document.querySelector('.popup__input_type_name');
 const jobInput = document.querySelector('.popup__input_type_description');
-
 const placeInput = document.querySelector('.popup__input_type_card-name');
 const linkInput = document.querySelector('.popup__input_type_url');
-
 const popupImage = document.querySelector('.popup_type_image');
 const imagePopupImg = popupImage.querySelector('.popup__image');
 const imagePopupCaption = popupImage.querySelector('.popup__caption');
@@ -48,9 +46,9 @@ function closeModal() {
 };
 
 function handleEscKey(event) {
-    if (event.key === 'Escape') {
-        closeModal();
-    }
+  if (event.key === 'Escape') {
+    closeModal();
+  }
 }
 
 function handleFormSubmit(evt) {

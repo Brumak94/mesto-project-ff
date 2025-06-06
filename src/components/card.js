@@ -1,4 +1,5 @@
 import {handleImg} from './modal.js';
+
 const cardsContainer = document.querySelector('.places__list');
 
 function createCard(cardData, onDelete, onLike, openImg) {
