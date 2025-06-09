@@ -30,7 +30,3 @@ function closeEscKey(event) {
 };
 
 export { openModal, closeModal };
-
-function sum(arg1, arg2) {
-  dsfsdf
-};
