@@ -1,9 +1,11 @@
 import './index.css';
+import './components/api.js';
 import { initialCards } from './components/cards.js';
 import { createCard, handleDelete, handleLike } from './components/card.js';
 import { openModal, closeModal } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
 import { validationConfig, popupEdit, popupNew, popupImage, buttonEdit, buttonAdd, formElementProfile, formElementCard, imagePopupImg, imagePopupCaption, cardsContainer, placeInput,linkInput, profileTitle, profileDescription, nameInput, jobInput } from './components/constants.js';
+import { getCards, initialProfile } from './components/api.js';
 
 
 function profileFormEdit(evt) {
@@ -44,11 +46,16 @@ function renderCard(cardData, typeAppend = 'append') {
 };
 
 
+
 enableValidation(validationConfig);
 clearValidation(formElementProfile, validationConfig);
 clearValidation(formElementCard, validationConfig);
 
-initialCards.forEach(cardData => renderCard(cardData, handleImg));
+initialProfile();
+getCards().then((res) => {
+  res.forEach(cardData => renderCard(cardData, handleImg));
+});
+// initialCards.forEach(cardData => renderCard(cardData, handleImg));
 
 buttonEdit.addEventListener('click', () => {
   const currentName = profileTitle.textContent;

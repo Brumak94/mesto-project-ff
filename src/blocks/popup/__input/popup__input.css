@@ -24,17 +24,9 @@
   border-bottom: 1px solid rgba(0, 0, 0, .2);
 }
 
-/* .popup__input:invalid:has(.popup__input_type_error) {
-  border-bottom: 1px solid #FF0000;
-} */
-
 .popup__input_type_error {
   border-bottom: 1px solid #FF0000;
 }
-
-/* .popup__input_type_error:has(.popup__input:invalid) {
-  border-bottom: 1px solid #FF0000;
-} */
 
 @media screen and (max-width: 568px) {
   .popup__title {
