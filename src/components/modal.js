@@ -1,7 +1,9 @@
 function openModal(popup, clearValidation, validationConfig) {
-  const form = popup.querySelector(validationConfig.formSelector);
-  if (form) {
-    clearValidation(form, validationConfig)
+  if(clearValidation != undefined && validationConfig != undefined) {
+    const form = popup.querySelector(validationConfig.formSelector);
+    if (form) {
+      clearValidation(form, validationConfig)
+    }
   }
   popup.classList.add('popup_is-opened');
   const closeButton = popup.querySelector('.popup__close');

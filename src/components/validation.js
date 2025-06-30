@@ -20,7 +20,6 @@ const enableValidation = (validationConfig) => {
     })
     setEventListeners(formElement, validationConfig);
   });
-  
 };
 
 const clearValidation = (formElement, validationConfig) => {

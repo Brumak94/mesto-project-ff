@@ -3,8 +3,12 @@ import './components/api.js';
 import { createCard, handleDelete, handleLike } from './components/card.js';
 import { openModal, closeModal } from './components/modal.js';
 import { enableValidation, clearValidation } from './components/validation.js';
-import { popupAvatar, formElementAvatar, avatarInput, profileImage, validationConfig, popupEdit, popupNew, popupImage, buttonEdit, buttonAdd, formElementProfile, formElementCard, imagePopupImg, imagePopupCaption, cardsContainer, placeInput,linkInput, profileTitle, profileDescription, nameInput, jobInput } from './components/constants.js';
+import { popupDeleteCard, deleteConfirmButton, popupAvatar, formElementAvatar, avatarInput, profileImage, validationConfig, popupEdit, popupNew, popupImage, buttonEdit, buttonAdd, formElementProfile, formElementCard, imagePopupImg, imagePopupCaption, cardsContainer, placeInput,linkInput, profileTitle, profileDescription, nameInput, jobInput } from './components/constants.js';
 import { getCards, initialProfile, editProfile, addNewCard, avatarEdit } from './components/api.js';
+
+let idCardForDelete;
+let сardForDelete;
+let userId = '';
 
 function renderAvatar(userData) {
   if (userData.avatar) {
@@ -17,10 +21,22 @@ function renderAvatar(userData) {
 function profileImgEdit(evt) {
   evt.preventDefault();
   const linkAvatarUrl = avatarInput.value.trim();
-  avatarEdit(linkAvatarUrl).then(userData => {
+
+  const submitButton = evt.target.querySelector('.popup__button');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Сохранение...';
+
+  avatarEdit(linkAvatarUrl)
+    .then(userData => {
     profileImage.style.backgroundImage = `url(${userData.avatar})`;
     evt.target.reset();
     closeModal();
+  })
+  .catch((err) => {
+    console.log('Ошибка обновления аватара:', err)  
+  })
+  .finally(() => {
+    submitButton.textContent = originalText;
   });  
 };
 
@@ -30,23 +46,53 @@ function profileFormEdit(evt) {
   const jobValue = jobInput.value.trim();
   profileTitle.textContent = nameValue;
   profileDescription.textContent = jobValue;
+  
+  const submitButton = evt.target.querySelector('.popup__button');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Сохранение...';
+
   editProfile({name: nameValue, about: jobValue})
-  nameInput.value = '';
-  jobInput.value = '';
-  closeModal();
+  .then(() => {
+    nameInput.value = '';
+    jobInput.value = '';
+    closeModal();
+  })
+  .catch((err) => {
+    console.log('Ошибка обновления профиля:', err)  
+  })
+  .finally(() => {
+    submitButton.textContent = originalText;
+  }); 
+  
 };
 
 function handleFormCard(evt, renderCard, addNewCard) {
   evt.preventDefault();
   const placeValue = placeInput.value.trim();
   const linkValue = linkInput.value.trim();
+
+  const submitButton = evt.target.querySelector('.popup__button');
+  const originalText = submitButton.textContent;
+  submitButton.textContent = 'Сохранение...';
+
   addNewCard({name: placeValue, link: linkValue})
   .then((newCardData) => {
     renderCard(newCardData, 'prepend')
     evt.target.reset();
     closeModal();
+  })
+  .catch((err) => {
+    console.log('Ошибка добавления карточки:', err);  
+  })
+  .finally(() => {
+    submitButton.textContent = originalText;
   });
-  
+};
+
+function openDeletePopup(cardId, cardElement) {
+  openModal(popupDeleteCard);
+  idCardForDelete = cardId;
+  сardForDelete = cardElement;
 };
 
 function handleImg(cardImage) {
@@ -57,7 +103,7 @@ function handleImg(cardImage) {
 };
 
 function renderCard(cardData, typeAppend = 'append') {
-  const card = createCard(cardData, userId, handleDelete, handleLike, handleImg);
+  const card = createCard(cardData, userId, openDeletePopup, handleLike, handleImg);
   if (typeAppend === 'prepend') {
     cardsContainer.prepend(card);
   } else {
@@ -65,19 +111,9 @@ function renderCard(cardData, typeAppend = 'append') {
   }
 };
 
-let idCardForDelete;
-let сardForDelete;
-
-function handleDeleteClick(id, card) {
-idCardForDelete = id;
-сardForDelete = card;
-}
-
 enableValidation(validationConfig);
 clearValidation(formElementProfile, validationConfig);
 clearValidation(formElementCard, validationConfig);
-
-let userId = '';
 
 Promise.all([initialProfile(), getCards()]).then(([userData, cards]) => {
   userId = userData._id;
@@ -87,6 +123,11 @@ Promise.all([initialProfile(), getCards()]).then(([userData, cards]) => {
   cards.forEach(cardData => renderCard(cardData, handleImg));
 }).catch(err => {
   console.log('Ошибка при загрузке данных:', err)
+});
+
+deleteConfirmButton.addEventListener('click', () => {
+  handleDelete(idCardForDelete, сardForDelete)
+  closeModal(popupDeleteCard);
 });
 
 buttonEdit.addEventListener('click', () => {

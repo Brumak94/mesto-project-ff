@@ -1,16 +1,17 @@
-// Идентификатор нашей когорты: wff-cohort-41
-// Твой токен: 5fb77e1e-63b4-4627-a783-59a1f32db827
-
 function initialProfile() {
   return fetch('https://nomoreparties.co/v1/wff-cohort-41/users/me', {
   headers: {
     authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827'
   }
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
-
-    
+ 
 function getCards() {
   return fetch('https://nomoreparties.co/v1/wff-cohort-41/cards', {
   headers: {
@@ -18,7 +19,12 @@ function getCards() {
     'Content-Type': 'application/json'
   }
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
 function editProfile(data) {
@@ -30,7 +36,12 @@ function editProfile(data) {
   },
   body: JSON.stringify(data)
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
 function addNewCard(data) {
@@ -42,7 +53,12 @@ function addNewCard(data) {
     },
     body: JSON.stringify(data)
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
 function deleteCard(cardId) {
@@ -52,9 +68,13 @@ function deleteCard(cardId) {
       authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827',
       'Content-Type': 'application/json'
     }
-    
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
 function likeCard(cardId) {
@@ -65,7 +85,12 @@ function likeCard(cardId) {
       'Content-Type': 'application/json'
     }
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
 function unlikeCard(cardId) {
@@ -76,7 +101,12 @@ function unlikeCard(cardId) {
       'Content-Type': 'application/json'
     }
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
 
 function avatarEdit(avatarUrl) {
@@ -88,6 +118,12 @@ function avatarEdit(avatarUrl) {
     },
     body: JSON.stringify({ avatar: avatarUrl })
   })
-  .then(res => res.json())
+  .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    });
 };
+
 export { initialProfile, getCards, editProfile, addNewCard, deleteCard, likeCard, unlikeCard, avatarEdit };
