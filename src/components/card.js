@@ -1,4 +1,4 @@
-import { deleteCard } from './api.js';
+import { deleteCard, likeCard, unlikeCard } from './api.js';
 
 function createCard(cardData, userId, onDelete, onLike, openImg) {
   const cardTemplate = document.querySelector("#card-template").content;
@@ -23,7 +23,7 @@ function createCard(cardData, userId, onDelete, onLike, openImg) {
   deleteButton.style.display = isOwner ? "block" : "none";
 
   likeButton.addEventListener("click", () => {
-    onLike(cardData, likeButton, likeCount, userId);
+    onLike(cardData, likeButton, likeCount);
   });
 
   deleteButton.addEventListener("click", () => {
@@ -39,8 +39,15 @@ function createCard(cardData, userId, onDelete, onLike, openImg) {
   return cardElement;
 };
 
-function handleLike(likeButton) {
-  likeButton.classList.toggle("card__like-button_is-active");
+function handleLike(cardData, likeButton, likeCount) {
+  
+  const isLiked = likeButton.classList.contains("card__like-button_is-active");
+  const methodLike = isLiked ? unlikeCard : likeCard;
+  methodLike(cardData._id).then(updatedCard => {
+    likeCount.textContent = updatedCard.likes.length;
+    likeButton.classList.toggle("card__like-button_is-active");
+  })
+  .catch(err => console.log('Ошибка при обновлении лайка:', err))
 };
 
 function handleDelete(cardId, cardElement) {

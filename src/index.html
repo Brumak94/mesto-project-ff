@@ -38,6 +38,7 @@
       <footer class="footer page__section">
         <p class="footer__copyright">© 2021 Mesto Russia</p>
       </footer>
+
       <!-- Редактирование профиля -->
       <div class="popup popup_type_edit popup_is-animated" id="popupEdit">
         <div class="popup__content">
@@ -77,6 +78,7 @@
         </div>
       </div>
       <!-- Редактирование профиля -->
+
       <!--Плюсик  -->
       <div class="popup popup_type_new-card popup_is-animated" id="popupNew">
         <div class="popup__content">
@@ -112,6 +114,7 @@
         </div>
       </div>
       <!--Плюсик  -->
+
       <!--Картинка  -->
       <div class="popup popup_type_image popup_is-animated">
         <div class="popup__content popup__content_content_image">
@@ -120,8 +123,43 @@
           <p class="popup__caption"></p>
         </div>
       </div>
+      <!--Картинка  -->
+
+      <!-- Аватар -->
+      <div class="popup popup_type_avatar popup_is-animated" id="popupAvatar">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Обновить аватар</h3>
+          <form class="popup__form" name="edit-avatar" novalidate>
+            <input
+              id="avatar-input"
+              type="url"
+              name="avatar"
+              class="popup__input popup__input_type_avatar"
+              placeholder="Ссылка на аватар"
+              required
+            />
+            <span class="avatar-input-error popup__input-error"></span>
+            <button type="submit" class="button popup__button">
+              Сохранить
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- Аватар -->
+
+      <!-- Удаление карточки -->
+      <div class="popup popup_type_delete-card popup_is-animated" id="popupDeleteCard">
+        <div class="popup__content">
+          <button type="button" class="popup__close"></button>
+          <h3 class="popup__title">Вы уверены?</h3>
+            <button type="submit" class="button popup__button">
+              Да
+            </button>
+        </div>
+      </div>
+      <!-- Удаление карточки -->
     </div>
-    <!--Картинка  -->
 
     <template id="card-template">
       <li class="places__item card">

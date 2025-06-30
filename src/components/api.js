@@ -14,7 +14,8 @@ function initialProfile() {
 function getCards() {
   return fetch('https://nomoreparties.co/v1/wff-cohort-41/cards', {
   headers: {
-    authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827'
+    authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827',
+    'Content-Type': 'application/json'
   }
   })
   .then(res => res.json())
@@ -49,12 +50,44 @@ function deleteCard(cardId) {
     method: 'DELETE',
     headers: {
       authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827',
+      'Content-Type': 'application/json'
     }
     
   })
   .then(res => res.json())
 };
 
+function likeCard(cardId) {
+  return fetch(`https://nomoreparties.co/v1/wff-cohort-41/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: {
+      authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827',
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+};
 
+function unlikeCard(cardId) {
+  return fetch(`https://nomoreparties.co/v1/wff-cohort-41/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827',
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(res => res.json())
+};
 
-export { initialProfile, getCards, editProfile, addNewCard, deleteCard };
+function avatarEdit(avatarUrl) {
+  return fetch('https://nomoreparties.co/v1/wff-cohort-41/users/me/avatar', {
+    method: 'PATCH',
+    headers: {
+      authorization: '5fb77e1e-63b4-4627-a783-59a1f32db827',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ avatar: avatarUrl })
+  })
+  .then(res => res.json())
+};
+export { initialProfile, getCards, editProfile, addNewCard, deleteCard, likeCard, unlikeCard, avatarEdit };
