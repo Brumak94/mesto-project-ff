@@ -11,11 +11,7 @@ let сardForDelete;
 let userId = '';
 
 function renderAvatar(userData) {
-  if (userData.avatar) {
-    profileImage.style.backgroundImage = `url(${userData.avatar})`;
-  } else {
-    profileImage.style.backgroundImage = `url(${defaultAvatarPath})`;
-  }
+  profileImage.style.backgroundImage = `url(${userData.avatar || defaultAvatarPath})`;
 }
 
 function profileImgEdit(evt) {
@@ -28,7 +24,7 @@ function profileImgEdit(evt) {
 
   avatarEdit(linkAvatarUrl)
     .then(userData => {
-    profileImage.style.backgroundImage = `url(${userData.avatar})`;
+    renderAvatar(userData);
     evt.target.reset();
     closeModal();
   })
@@ -44,15 +40,15 @@ function profileFormEdit(evt) {
   evt.preventDefault();
   const nameValue = nameInput.value.trim();
   const jobValue = jobInput.value.trim();
-  profileTitle.textContent = nameValue;
-  profileDescription.textContent = jobValue;
   
   const submitButton = evt.target.querySelector('.popup__button');
   const originalText = submitButton.textContent;
   submitButton.textContent = 'Сохранение...';
 
   editProfile({name: nameValue, about: jobValue})
-  .then(() => {
+  .then((userData) => {
+    profileTitle.textContent = userData.name;
+    profileDescription.textContent = userData.about;
     nameInput.value = '';
     jobInput.value = '';
     closeModal();
@@ -63,7 +59,6 @@ function profileFormEdit(evt) {
   .finally(() => {
     submitButton.textContent = originalText;
   }); 
-  
 };
 
 function handleFormCard(evt, renderCard, addNewCard) {
@@ -96,7 +91,7 @@ function openDeletePopup(cardId, cardElement) {
 };
 
 function handleImg(cardImage) {
-  openModal(popupImage, clearValidation, validationConfig);
+  openModal(popupImage);
   imagePopupImg.src = cardImage.link;
   imagePopupCaption.textContent = cardImage.name;
   imagePopupImg.alt = `Изображение места: ${cardImage.name}`;
@@ -135,18 +130,21 @@ buttonEdit.addEventListener('click', () => {
   const currentJob = profileDescription.textContent;
   nameInput.value = currentName;
   jobInput.value = currentJob;
-  openModal(popupEdit, clearValidation, validationConfig)
+  openModal(popupEdit);
+  clearValidation(formElementProfile, validationConfig);
 });
 
 buttonAdd.addEventListener('click', () => {
   placeInput.value = '';
   linkInput.value = '';
-  openModal(popupNew, clearValidation, validationConfig)
+  openModal(popupNew);
+  clearValidation(formElementCard, validationConfig);
 });
 
 profileImage.addEventListener('click', () => {
   avatarInput.value = '';
-  openModal(popupAvatar, clearValidation, validationConfig)
+  openModal(popupAvatar);
+  clearValidation(formElementAvatar, validationConfig);
 });
 
 formElementCard.addEventListener('submit', (e) => handleFormCard(e, renderCard, addNewCard));

@@ -26,11 +26,11 @@ function createCard(cardData, userId, onDelete, onLike, openImg) {
     onLike(cardData, likeButton, likeCount);
   });
 
-  deleteButton.addEventListener("click", () => {
-    if(isOwner) {
+  if(isOwner) {
+    deleteButton.addEventListener("click", () => {
       onDelete(cardData._id, cardElement);
-    }
-  });
+    })
+  }
 
   cardImage.addEventListener("click", () => {
     openImg(cardData);
@@ -40,7 +40,6 @@ function createCard(cardData, userId, onDelete, onLike, openImg) {
 };
 
 function handleLike(cardData, likeButton, likeCount) {
-  
   const isLiked = likeButton.classList.contains("card__like-button_is-active");
   const methodLike = isLiked ? unlikeCard : likeCard;
   methodLike(cardData._id).then(updatedCard => {
